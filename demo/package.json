@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@11ty/eleventy": "^0.11.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "eleventy-plugin-ghost": "^1.0.0"
   }
 }
