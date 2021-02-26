@@ -1,0 +1,23 @@
+---
+pagination:
+  data: ghost.tags
+  size: 1
+  alias: tag
+permalink: "/{{ tag.slug }}/"
+---
+
+{% extends "base.njk" %}
+
+{% block title %}{{ tag.name }}{% endblock %}
+
+{% block main %}
+  <h1>{{ tag.name }}</h1>
+  
+  <p>{{ tag.description }}</p>
+  
+  <ul>
+    {% for post in ghost.posts | filterPosts("tags", tag.slug) %}
+      <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

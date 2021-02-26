@@ -1,73 +1,66 @@
-## Eleventy Plugin Template
+# eleventy-plugin-ghost
 
-> A starter environment for creating plugins for Eleventy (11ty).
+[![npm](https://img.shields.io/npm/v/eleventy-plugin-ghost)](https://www.npmjs.com/package/eleventy-plugin-ghost)
 
-Fork this repo, or select "Use this template" to get started.
+Import your [Ghost](https://ghost.org) content directly into [Eleventy](https://github.com/11ty/eleventy) as global data.
 
-### Using this template
+_Note: This plugin currently uses a development version of Eleventy which includes [`addGlobalData()`](https://www.11ty.dev/docs/data-global-custom/), tread carefully_
 
-This template is setup to run a single page 11ty site for testing your plugin functionality. The build files are excluded from the final plugin package via `.npmignore`.
+See the live demo and the demo directory in the repo to see it all in action.
 
-Your plugin functionality should live in/be exported from `.eleventy.js`. You will find a sample of creating a filter plugin in this template, including setting up a default config and merging user options.
+- [Installation](#installation)
+- [Development](#development)
 
-**Be sure to update the `package.json` with your own details!**
+## Installation
 
-### Testing your plugin
+1. Install plugin using npm:
 
-You can test your functionality within this project's local 11ty build by running `npm start`, but you'll also want to test it _as a plugin_.
+   ```
+   npm install eleventy-plugin-ghost --save
+   ```
 
-From another local 11ty project, you can set the `require()` path relatively to your plugin's project directory, and then use it just as you would for a plugin coming from a package.
+2. Add plugin to your `.eleventy.js` config, ensuring to add your Ghost url and Content API key. Check out the Ghost docs for [how to create a Content API key](http://www.ghost.org/docs/content-api/):
 
-Example, assuming you place all your repositories within the same parent directory:
+   ```js
+   const pluginGhost = require("eleventy-plugin-ghost");
 
-```js
-const pluginName = require("../plugin-directory");
+   require("dotenv").config();
+   const { GHOST_URL, GHOST_KEY } = process.env;
 
-module.exports = (eleventyConfig) => {
-  eleventyConfig.addPlugin(pluginName, { optionName: 'if needed' );
-};
-```
+   module.exports = (eleventyConfig) => {
+     eleventyConfig.addPlugin(pluginGhost, {
+       url: GHOST_URL,
+       key: GHOST_KEY,
+       version: "v3",
+     });
+   };
+   ```
 
-Then, run the project to test the plugin's functionality.
+3. Run your Eleventy project and use the global `ghost` data variable to access `posts`, `pages`, `tags` and `authors`. A custom `filterPosts` filter comes bundled with the plugin to help with post and page filtering depending on tags or authors. For example:
 
-Note that making changes in the plugin source will likely require restarting the test project.
+   ```nunjucks
+   {% for post in ghost.posts | filterPosts("tags", tag.slug) %}
+     <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
+   {% endfor %}
+   ```
 
-### Resources for creating an 11ty plugin
+## Development
 
-- Bryan Robinson's ["Create a Plugin with 11ty"](https://www.youtube.com/watch?v=aO-NFFKjnnE) demonstration on "Learn With Jason"
+1. Create a `.env` file inside of `demo` with the following credentials:
 
----
+   ```text
+   GHOST_URL=https://demo.ghost.io
+   GHOST_KEY=22444f78447824223cefc48062
+   ```
 
-**The following is a boilerplate for your final plugin README**.
+2. Install the demo dependencies:
 
-## Usage
+   ```
+   cd demo
+   npm install
+   ```
 
-Describe how to install your plugin, such as:
-
-```bash
-npm install @scope/plugin-name
-```
-
-Then, include it in your `.eleventy.js` config file:
-
-```js
-const pluginName = require("@scope/plugin-name");
-
-module.exports = (eleventyConfig) => {
-  eleventyConfig.addPlugin(pluginName);
-};
-```
-
-## Config Options
-
-| Option      | Type | Default       |
-| ----------- | ---- | ------------- |
-| option name | type | default value |
-
-## Config Examples
-
-Show examples of likely configurations.
-
-## Credits
-
-Add credits if needed.
+3. Run the demo locally:
+   ```
+   npm run dev
+   ```

@@ -1,33 +1,36 @@
 {
-  "name": "@scope/plugin-name",
+  "name": "eleventy-plugin-ghost",
   "version": "1.0.0",
-  "description": "Description of plugin",
-  "homepage": "",
+  "description": "Access the Ghost Content API in Eleventy 👻🎛",
+  "homepage": "https://github.com/daviddarnes/eleventy-plugin-ghost",
   "main": ".eleventy.js",
   "scripts": {
-    "start": "eleventy --serve",
     "build": "eleventy",
     "bump": "npm --no-git-tag-version version"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/username/repo-name.git"
+    "url": "git+https://github.com/daviddarnes/eleventy-plugin-ghost.git"
   },
   "keywords": [
     "11ty",
     "11ty-plugin",
     "eleventy",
-    "eleventy-plugin"
+    "eleventy-plugin",
+    "ghost",
+    "ghost-api",
+    "headless-cms"
   ],
   "author": {
-    "name": "username",
-    "url": "https://website.com"
+    "name": "daviddarnes",
+    "url": "https://darn.es"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/username/repo-name/issues"
+    "url": "https://github.com/daviddarnes/eleventy-plugin-ghost/issues"
   },
-  "devDependencies": {
-    "@11ty/eleventy": "^0.11.1"
+  "dependencies": {
+    "@11ty/eleventy": "github:11ty/eleventy#canary",
+    "@tryghost/content-api": "^1.4.14"
   }
 }

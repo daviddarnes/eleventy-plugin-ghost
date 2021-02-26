@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plugin Test Page</title>
+  <title>{% block title %}{{ ghost.settings.title }}{% endblock %}
+</title>
 </head>
 <body>
-  {{ content | safe }}
+  {% block main %}{% endblock %}
 </body>
 </html>

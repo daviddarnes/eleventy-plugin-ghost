@@ -1,0 +1,23 @@
+---
+pagination:
+  data: ghost.authors
+  size: 1
+  alias: author
+permalink: "/{{ author.slug }}/"
+---
+
+{% extends "base.njk" %}
+
+{% block title %}{{ author.name }}{% endblock %}
+
+{% block main %}
+  <h1>{{ author.name }}</h1>
+  
+  <p>{{ author.bio }}</p>
+  
+  <ul>
+    {% for post in ghost.posts | filterPosts("authors", author.slug) %}
+      <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
