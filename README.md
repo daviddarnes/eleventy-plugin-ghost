@@ -6,7 +6,7 @@ Import your [Ghost](https://ghost.org) content directly into [Eleventy](https://
 
 _Note: This plugin currently uses a development version of Eleventy which includes [`addGlobalData()`](https://www.11ty.dev/docs/data-global-custom/), tread carefully_
 
-See the live demo and the demo directory in the repo to see it all in action.
+[See the live demo](https://eleventy-plugin-ghost.netlify.app) and the [demo directory in the repo](https://github.com/daviddarnes/eleventy-plugin-ghost/tree/main/demo) to see it all in action.
 
 - [Installation](#installation)
 - [Development](#development)
@@ -36,6 +36,13 @@ See the live demo and the demo directory in the repo to see it all in action.
    };
    ```
 
+   The example above is using `dotenv` with a `.env` file to ensure credentials are stored in the source code. Here's an example of the `.env` file:
+
+   ```text
+   GHOST_URL=https://demo.ghost.io
+   GHOST_KEY=22444f78447824223cefc48062
+   ```
+
 3. Run your Eleventy project and use the global `ghost` data variable to access `posts`, `pages`, `tags` and `authors`. A custom `filterPosts` filter comes bundled with the plugin to help with post and page filtering depending on tags or authors. For example:
 
    ```nunjucks
@@ -53,14 +60,21 @@ See the live demo and the demo directory in the repo to see it all in action.
    GHOST_KEY=22444f78447824223cefc48062
    ```
 
-2. Install the demo dependencies:
+2. Amends the `.eleventy.js` file within `demo` so it points to the source code in the parent directory:
+
+   ```js
+   // const pluginGhost = require("../");
+   const pluginGhost = require("eleventy-plugin-ghost");
+   ```
+
+3. Install the demo dependencies:
 
    ```
    cd demo
    npm install
    ```
 
-3. Run the demo locally:
+4. Run the demo locally:
    ```
    npm run dev
    ```
