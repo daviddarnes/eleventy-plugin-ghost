@@ -1,6 +1,6 @@
 {
   "name": "eleventy-plugin-ghost",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Access the Ghost Content API in Eleventy 👻🎛",
   "homepage": "https://github.com/daviddarnes/eleventy-plugin-ghost",
   "main": ".eleventy.js",
@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "@11ty/eleventy": "github:11ty/eleventy#canary",
-    "@tryghost/content-api": "^1.4.14"
+    "@11ty/eleventy-cache-assets": "^2.1.0"
   }
 }
