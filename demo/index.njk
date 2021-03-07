@@ -32,4 +32,11 @@
       <li><a href="/{{ author.slug }}/">{{ author.name }}</a></li>
     {% endfor %}
   </ul>
+  
+  <h2>Example internal tag</h2>
+  <ul>
+    {% for example in ghost.posts | filterPosts("internalTags", "hash-internal-tag") %}
+      <li><a href="/{{ example.slug }}/">{{ example.title }}</a></li>
+    {% endfor %}
+  </ul>
 {% endblock %}

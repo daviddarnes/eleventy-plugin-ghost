@@ -7,7 +7,22 @@ const getPosts = async ({ url, key, version }) => {
     { duration: "1m", type: "json" }
   );
 
-  return data.posts;
+  const updatedPosts = await data.posts.map((post) => {
+    // Filter tags to just show public tags
+    // Reassign internal tags to an internalTags key
+    const publicTags = post.tags.filter((tag) => tag.visibility !== "internal");
+    const internalTags = post.tags.filter(
+      (tag) => tag.visibility === "internal"
+    );
+
+    return {
+      ...post,
+      tags: publicTags,
+      internalTags: internalTags,
+    };
+  });
+
+  return updatedPosts;
 };
 
 // Get all page data
@@ -23,7 +38,7 @@ const getPages = async ({ url, key, version }) => {
 // Get all tag data
 const getTags = async ({ url, key, version }) => {
   const data = await Cache(
-    `${url}/ghost/api/v3/content/tags/?key=${key}&limit=all&include=count.posts`,
+    `${url}/ghost/api/v3/content/tags/?key=${key}&limit=all&include=count.posts&filter=visibility:public`,
     { duration: "1m", type: "json" }
   );
 
@@ -79,6 +94,18 @@ module.exports = (
   );
 
   eleventyConfig.addFilter("filterPosts", (posts, key, value) => {
+    // Check for exclamation before the second parameter…
+    if (value.startsWith("!")) {
+      // Snip off that exclamation
+      const unprefixedValue = value.substring(1);
+
+      // Filter posts that don't include this value
+      return posts.filter((post) =>
+        post[key].every((item) => item.slug !== unprefixedValue)
+      );
+    }
+
+    // Filter posts that have the value
     return posts.filter((post) =>
       post[key].some((item) => item.slug === value)
     );
