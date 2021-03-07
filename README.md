@@ -17,7 +17,7 @@ _Note: This plugin currently uses a development version of Eleventy which includ
 1. Install plugin using npm:
 
    ```
-   npm install eleventy-plugin-ghost --save
+   npm install eleventy-plugin-ghost
    ```
 
 2. Add plugin to your `.eleventy.js` config, ensuring to add your Ghost url and Content API key. Check out the Ghost docs for [how to create a Content API key](http://www.ghost.org/docs/content-api/):
@@ -37,7 +37,7 @@ _Note: This plugin currently uses a development version of Eleventy which includ
    };
    ```
 
-   The example above is using `dotenv` with a `.env` file to ensure credentials are stored in the source code. Here's an example of the `.env` file:
+   The example above is using `dotenv` with a `.env` file to ensure credentials are **not** stored in the source code. Here's an example of the `.env` file:
 
    ```text
    GHOST_URL=https://demo.ghost.io
@@ -105,9 +105,7 @@ Check out the demo directory of this project for more extensive examples.
    GHOST_KEY=22444f78447824223cefc48062
    ```
 
-````
-
-2. Amends the `.eleventy.js` file within `demo` so it points to the source code in the parent directory:
+2. Amend the `.eleventy.js` file within `demo` so it points to the source code in the parent directory:
 
    ```js
    // const pluginGhost = require("../");
@@ -116,13 +114,12 @@ Check out the demo directory of this project for more extensive examples.
 
 3. Install the demo dependencies:
 
-   ```
+   ```text
    cd demo
    npm install
    ```
 
 4. Run the demo locally:
-   ```
+   ```text
    npm run dev
    ```
-````
