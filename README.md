@@ -9,6 +9,7 @@ _Note: This plugin currently uses a development version of Eleventy which includ
 [See the live demo](https://eleventy-plugin-ghost.netlify.app) and the [demo directory in the repo](https://github.com/daviddarnes/eleventy-plugin-ghost/tree/main/demo) to see it all in action.
 
 - [Installation](#installation)
+- [Usage](#usage)
 - [Development](#development)
 
 ## Installation
@@ -43,13 +44,57 @@ _Note: This plugin currently uses a development version of Eleventy which includ
    GHOST_KEY=22444f78447824223cefc48062
    ```
 
-3. Run your Eleventy project and use the global `ghost` data variable to access `posts`, `pages`, `tags` and `authors`. A custom `filterPosts` filter comes bundled with the plugin to help with post and page filtering depending on tags or authors. For example:
+3. Run your Eleventy project and use the global `ghost` data variable to access `posts`, `pages`, `tags` and `authors`.
 
-   ```nunjucks
-   {% for post in ghost.posts | filterPosts("tags", tag.slug) %}
-     <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
-   {% endfor %}
-   ```
+## Usage
+
+The plugin comes with a custom filter called `filterPosts`, this can be used to filter posts by attributes such as `authors`, `tags` and `internalTags`. For example, if I want to create tag pages for all my tags and show posts assigned to them I can iterate over the tags with [eleventy pagination](https://www.11ty.dev/docs/pagination/) and filter the posts by that tag:
+
+```nunjucks
+---
+pagination:
+  data: ghost.tags
+  size: 1
+  alias: tag
+permalink: "/{{ tag.slug }}/"
+---
+
+{% for post in ghost.posts | filterPosts("tags", tag.slug) %}
+  <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
+{% endfor %}
+```
+
+Plain text values also work:
+
+```nunjucks
+{% for post in ghost.posts | filterPosts("tags", "blog") %}
+  <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
+{% endfor %}
+```
+
+As well as filtering out by a certain attribute by prefixing the value with `!`:
+
+```nunjucks
+{% for post in ghost.posts | filterPosts("tags", "!portfolio") %}
+  <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
+{% endfor %}
+```
+
+To handle internal tags within Ghost better posts have `tags` populated with just public tags and `internalTags` populated with just internal tags. This allows for post filtering when a post has, or hasn't, been assigned with a certain internal tag:
+
+```nunjucks
+{% for post in ghost.posts | filterPosts("internalTags", "hash-internal-tag") %}
+  <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
+{% endfor %}
+
+<!-- or -->
+
+{% for post in ghost.posts | filterPosts("internalTags", "!hash-internal-tag") %}
+  <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
+{% endfor %}
+```
+
+Check out the demo directory of this project for more extensive examples.
 
 ## Development
 
@@ -59,6 +104,8 @@ _Note: This plugin currently uses a development version of Eleventy which includ
    GHOST_URL=https://demo.ghost.io
    GHOST_KEY=22444f78447824223cefc48062
    ```
+
+````
 
 2. Amends the `.eleventy.js` file within `demo` so it points to the source code in the parent directory:
 
@@ -78,3 +125,4 @@ _Note: This plugin currently uses a development version of Eleventy which includ
    ```
    npm run dev
    ```
+````
