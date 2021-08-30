@@ -32,7 +32,7 @@ _Note: This plugin currently uses a development version of Eleventy which includ
      eleventyConfig.addPlugin(pluginGhost, {
        url: GHOST_URL,
        key: GHOST_KEY,
-       version: "v3",
+       version: "v4",
      });
    };
    ```
@@ -45,6 +45,8 @@ _Note: This plugin currently uses a development version of Eleventy which includ
    ```
 
 3. Run your Eleventy project and use the global `ghost` data variable to access `posts`, `pages`, `tags`, `authors` and `settings`.
+
+The API will default to the latest version, which is `v4` presently. However passing `version` into the plugin options will set the version returned, as shown in the above code sample.
 
 ## Usage
 

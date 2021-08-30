@@ -78,24 +78,13 @@ const getContent = async (params) => {
   };
 };
 
-module.exports = (
-  eleventyConfig,
-  options = {
-    url,
-    key,
-    version,
-  }
-) => {
+module.exports = (eleventyConfig, options) => {
   eleventyConfig.addGlobalData("ghost", async () => {
     if (!options.url || !options.key) {
       console.log("Invalid Ghost API key or URL");
     }
 
-    return await getContent({
-      url: options.url,
-      key: options.key,
-      verison: options.version,
-    });
+    return await getContent(options);
   });
 
   eleventyConfig.addFilter("filterPosts", (posts, key, value) => {
