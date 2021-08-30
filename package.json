@@ -30,7 +30,7 @@
     "url": "https://github.com/daviddarnes/eleventy-plugin-ghost/issues"
   },
   "dependencies": {
-    "@11ty/eleventy": "github:11ty/eleventy#canary",
+    "@11ty/eleventy": "^1.0.0-canary.41",
     "@11ty/eleventy-cache-assets": "^2.1.0"
   }
 }

@@ -4,7 +4,7 @@
     "build": "eleventy"
   },
   "dependencies": {
-    "@11ty/eleventy": "github:11ty/eleventy#canary",
+    "@11ty/eleventy": "^1.0.0-canary.41",
     "dotenv": "^8.2.0",
     "eleventy-plugin-ghost": "^1.2.0"
   }

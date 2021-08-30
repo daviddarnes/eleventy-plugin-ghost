@@ -1,9 +1,9 @@
 const Cache = require("@11ty/eleventy-cache-assets");
 
 // Get all post data
-const getPosts = async ({ url, key, version }) => {
+const getPosts = async ({ url, key, version = "v4" }) => {
   const data = await Cache(
-    `${url}/ghost/api/v3/content/posts/?key=${key}&limit=all&include=tags,authors`,
+    `${url}/ghost/api/${version}/content/posts/?key=${key}&limit=all&include=tags,authors`,
     { duration: "1m", type: "json" }
   );
 
@@ -26,9 +26,9 @@ const getPosts = async ({ url, key, version }) => {
 };
 
 // Get all page data
-const getPages = async ({ url, key, version }) => {
+const getPages = async ({ url, key, version = "v4" }) => {
   const data = await Cache(
-    `${url}/ghost/api/v3/content/pages/?key=${key}&limit=all`,
+    `${url}/ghost/api/${version}/content/pages/?key=${key}&limit=all`,
     { duration: "1m", type: "json" }
   );
 
@@ -36,9 +36,9 @@ const getPages = async ({ url, key, version }) => {
 };
 
 // Get all tag data
-const getTags = async ({ url, key, version }) => {
+const getTags = async ({ url, key, version = "v4" }) => {
   const data = await Cache(
-    `${url}/ghost/api/v3/content/tags/?key=${key}&limit=all&include=count.posts&filter=visibility:public`,
+    `${url}/ghost/api/${version}/content/tags/?key=${key}&limit=all&include=count.posts&filter=visibility:public`,
     { duration: "1m", type: "json" }
   );
 
@@ -46,9 +46,9 @@ const getTags = async ({ url, key, version }) => {
 };
 
 // Get all author data
-const getAuthors = async ({ url, key, version }) => {
+const getAuthors = async ({ url, key, version = "v4" }) => {
   const data = await Cache(
-    `${url}/ghost/api/v3/content/authors/?key=${key}&limit=all&include=count.posts`,
+    `${url}/ghost/api/${version}/content/authors/?key=${key}&limit=all&include=count.posts`,
     { duration: "1m", type: "json" }
   );
 
@@ -56,11 +56,14 @@ const getAuthors = async ({ url, key, version }) => {
 };
 
 // Get all settings data
-const getSettings = async ({ url, key, version }) => {
-  const data = await Cache(`${url}/ghost/api/v3/content/settings/?key=${key}`, {
-    duration: "1m",
-    type: "json",
-  });
+const getSettings = async ({ url, key, version = "v4" }) => {
+  const data = await Cache(
+    `${url}/ghost/api/${version}/content/settings/?key=${key}`,
+    {
+      duration: "1m",
+      type: "json",
+    }
+  );
 
   return data.settings;
 };
@@ -83,15 +86,17 @@ module.exports = (
     version,
   }
 ) => {
-  eleventyConfig.addGlobalData(
-    "ghost",
-    async () =>
-      await getContent({
-        url: options.url,
-        key: options.key,
-        verison: options.version,
-      })
-  );
+  eleventyConfig.addGlobalData("ghost", async () => {
+    if (!options.url || !options.key) {
+      console.log("Invalid Ghost API key or URL");
+    }
+
+    return await getContent({
+      url: options.url,
+      key: options.key,
+      verison: options.version,
+    });
+  });
 
   eleventyConfig.addFilter("filterPosts", (posts, key, value) => {
     // Check for exclamation before the second parameter…
