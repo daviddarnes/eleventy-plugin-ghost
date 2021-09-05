@@ -93,7 +93,7 @@ The filter works for `authors` as well as `internalTags`:
 ```
 
 ```nunjucks
-{% for post in ghost.posts | filterPosts("aurhors", "david") %}
+{% for post in ghost.posts | filterPosts("authors", "david") %}
   <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
 {% endfor %}
 ```
