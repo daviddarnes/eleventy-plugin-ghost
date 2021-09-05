@@ -32,6 +32,23 @@ const getPages = async ({ url, key, version = "v4" }) => {
     { duration: "1m", type: "json" }
   );
 
+  const updatedPages = await data.pages.map((page) => {
+    // Filter tags to just show public tags
+    // Reassign internal tags to an internalTags key
+    const publicTags = page.tags.filter((tag) => tag.visibility !== "internal");
+    const internalTags = page.tags.filter(
+      (tag) => tag.visibility === "internal"
+    );
+
+    return {
+      ...page,
+      tags: publicTags,
+      internalTags: internalTags,
+    };
+  });
+
+  return updatedPages;
+
   return data.pages;
 };
 

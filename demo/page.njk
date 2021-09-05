@@ -2,16 +2,15 @@
 pagination:
   data: ghost.pages
   size: 1
-  alias: page
-permalink: "/{{ page.slug }}/"
+  alias: doc
+permalink: "/{{ doc.slug }}/"
 ---
 
 {% extends "base.njk" %}
 
-{% block title %}{{ page.title }}{% endblock %}
+{% block title %}{{ doc.title }}{% endblock %}
 
 {% block main %}
-  <h1>{{ page.title }}</h1>
-
-  {{ page.html | safe }}
+  <h1>{{ doc.title }}</h1>
+  {{ doc.html | safe }}
 {% endblock %}

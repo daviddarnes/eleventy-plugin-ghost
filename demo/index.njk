@@ -2,40 +2,47 @@
 
 {% block main %}
   <h1>{{ ghost.settings.title }}</h1>
-  
+
   <p>{{ ghost.settings.description }}</p>
-  
+
   <h2>Posts</h2>
   <ul>
     {% for post in ghost.posts %}
       <li><a href="/{{ post.slug }}/">{{ post.title }}</a></li>
     {% endfor %}
   </ul>
-  
+
   <h2>Pages</h2>
   <ul>
     {% for page in ghost.pages %}
       <li><a href="/{{ page.slug }}/">{{ page.title }}</a></li>
     {% endfor %}
   </ul>
-  
+
   <h2>Tags</h2>
   <ul>
     {% for tag in ghost.tags %}
       <li><a href="/{{ tag.slug }}/">{{ tag.name }}</a></li>
     {% endfor %}
   </ul>
-  
+
   <h2>Authors</h2>
   <ul>
     {% for author in ghost.authors %}
       <li><a href="/{{ author.slug }}/">{{ author.name }}</a></li>
     {% endfor %}
   </ul>
-  
-  <h2>Example internal tag</h2>
+
+  <h2>Example internally tagged posts</h2>
   <ul>
     {% for example in ghost.posts | filterPosts("internalTags", "hash-internal-tag") %}
+      <li><a href="/{{ example.slug }}/">{{ example.title }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <h2>Example internally tagged pages</h2>
+  <ul>
+    {% for example in ghost.pages | filterPosts("internalTags", "hash-internal-tag") %}
       <li><a href="/{{ example.slug }}/">{{ example.title }}</a></li>
     {% endfor %}
   </ul>
