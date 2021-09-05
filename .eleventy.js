@@ -28,7 +28,7 @@ const getPosts = async ({ url, key, version = "v4" }) => {
 // Get all page data
 const getPages = async ({ url, key, version = "v4" }) => {
   const data = await Cache(
-    `${url}/ghost/api/${version}/content/pages/?key=${key}&limit=all`,
+    `${url}/ghost/api/${version}/content/pages/?key=${key}&limit=all&include=tags,authors`,
     { duration: "1m", type: "json" }
   );
 

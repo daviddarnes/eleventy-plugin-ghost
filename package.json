@@ -1,6 +1,6 @@
 {
   "name": "eleventy-plugin-ghost",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Access the Ghost Content API in Eleventy 👻🎛",
   "homepage": "https://github.com/daviddarnes/eleventy-plugin-ghost",
   "main": ".eleventy.js",
