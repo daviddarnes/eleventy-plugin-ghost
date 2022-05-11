@@ -5,7 +5,7 @@
   "homepage": "https://github.com/daviddarnes/eleventy-plugin-ghost",
   "main": ".eleventy.js",
   "scripts": {
-    "build": "eleventy",
+    "build": "npx @11ty/eleventy",
     "bump": "npm --no-git-tag-version version"
   },
   "repository": {
