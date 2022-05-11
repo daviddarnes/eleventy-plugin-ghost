@@ -4,7 +4,7 @@
 
 Import your [Ghost](https://ghost.org) content directly into [Eleventy](https://github.com/11ty/eleventy) as global data.
 
-_Note: This plugin currently uses a development version of Eleventy which includes [`addGlobalData()`](https://www.11ty.dev/docs/data-global-custom/), tread carefully_
+_Note: This plugin requires Eleventy v1.0.1 or newer in order to take advantage of [`addGlobalData()`](https://www.11ty.dev/docs/data-global-custom/)_
 
 [See the live demo](https://eleventy-plugin-ghost.netlify.app) and the [demo directory in the repo](https://github.com/daviddarnes/eleventy-plugin-ghost/tree/main/demo) to see it all in action.
 
