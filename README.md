@@ -60,7 +60,7 @@ After installing and running you'll be provided with a global `ghost` key as wel
 - `ghost.authors`: An array of all authors in Ghost, including the number of posts within each author
 - `ghost.settings`: All settings set in Ghost
 
-All data is cached using [`@11ty/eleventy-cache-assets`](https://www.11ty.dev/docs/plugins/cache/) with a duration of 1 minute. This keeps the local builds fast while still inheriting newly applied content.
+All data is cached using [`@11ty/eleventy-fetch`](https://www.11ty.dev/docs/plugins/fetch/) with a duration of 1 minute. This keeps the local builds fast while still inheriting newly applied content.
 
 ### Internal tags
 
