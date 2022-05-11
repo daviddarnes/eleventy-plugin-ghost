@@ -1,4 +1,4 @@
-const Cache = require("@11ty/eleventy-cache-assets");
+const Cache = require("@11ty/eleventy-fetch");
 
 // Get all post data
 const getPosts = async ({ url, key, version = "v4" }) => {
