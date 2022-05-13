@@ -1,10 +1,10 @@
 {
   "scripts": {
-    "dev": "eleventy --serve",
-    "build": "eleventy"
+    "dev": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy"
   },
   "dependencies": {
-    "@11ty/eleventy": "^1.0.0-canary.41",
+    "@11ty/eleventy": "^1.0.1",
     "dotenv": "^8.2.0",
     "eleventy-plugin-ghost": "^1.2.0"
   }
