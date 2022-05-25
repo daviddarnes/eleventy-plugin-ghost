@@ -6,7 +6,10 @@
   "main": ".eleventy.js",
   "scripts": {
     "build": "npx @11ty/eleventy",
-    "bump": "npm --no-git-tag-version version"
+    "publish": "git push origin && git push origin --tags",
+    "release:patch": "npm version patch && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:major": "npm version major && npm publish"
   },
   "repository": {
     "type": "git",
