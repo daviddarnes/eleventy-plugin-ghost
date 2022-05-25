@@ -4,7 +4,7 @@
 
 Import your [Ghost](https://ghost.org) content directly into [Eleventy](https://github.com/11ty/eleventy) as global data.
 
-_Note: This plugin currently uses a development version of Eleventy which includes [`addGlobalData()`](https://www.11ty.dev/docs/data-global-custom/), tread carefully_
+_Note: This plugin requires Eleventy v1.0.0 or newer in order to take advantage of [`addGlobalData()`](https://www.11ty.dev/docs/data-global-custom/)_
 
 [See the live demo](https://eleventy-plugin-ghost.netlify.app) and the [demo directory in the repo](https://github.com/daviddarnes/eleventy-plugin-ghost/tree/main/demo) to see it all in action.
 
@@ -60,7 +60,7 @@ After installing and running you'll be provided with a global `ghost` key as wel
 - `ghost.authors`: An array of all authors in Ghost, including the number of posts within each author
 - `ghost.settings`: All settings set in Ghost
 
-All data is cached using [`@11ty/eleventy-cache-assets`](https://www.11ty.dev/docs/plugins/cache/) with a duration of 1 minute. This keeps the local builds fast while still inheriting newly applied content.
+All data is cached using [`@11ty/eleventy-fetch`](https://www.11ty.dev/docs/plugins/fetch/) with a duration of 1 minute. This keeps the local builds fast while still inheriting newly applied content.
 
 ### Internal tags
 
