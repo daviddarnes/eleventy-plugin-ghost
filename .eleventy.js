@@ -1,10 +1,35 @@
-const Cache = require("@11ty/eleventy-fetch");
+const EleventyFetch = require("@11ty/eleventy-fetch");
+const jwt = require("jsonwebtoken");
+
+// Generate JWT
+const generateJwt = ({ adminKey, version = "v4" }) => {
+  const [id, secret] = adminKey.split(":");
+
+  return jwt.sign({}, Buffer.from(secret, "hex"), {
+    keyid: id,
+    algorithm: "HS256",
+    expiresIn: "5m",
+    audience: `/${version}/admin/`,
+  });
+};
 
 // Get all post data
-const getPosts = async ({ url, key, version = "v4" }) => {
-  const data = await Cache(
-    `${url}/ghost/api/${version}/content/posts/?key=${key}&limit=all&include=tags,authors`,
-    { duration: "1m", type: "json" }
+const getPosts = async ({ url, key, adminKey, version = "v4" }) => {
+  const data = await EleventyFetch(
+    `${url}/ghost/api/${version}/${
+      adminKey ? "admin" : "content"
+    }/posts/?key=${key}&limit=all&include=tags,authors&formats=html`,
+    {
+      duration: "1m",
+      type: "json",
+      ...(adminKey && {
+        fetchOptions: {
+          headers: {
+            Authorization: `Ghost ${generateJwt({ adminKey, version })}`,
+          },
+        },
+      }),
+    }
   );
 
   const updatedPosts = await data.posts.map((post) => {
@@ -26,10 +51,22 @@ const getPosts = async ({ url, key, version = "v4" }) => {
 };
 
 // Get all page data
-const getPages = async ({ url, key, version = "v4" }) => {
-  const data = await Cache(
-    `${url}/ghost/api/${version}/content/pages/?key=${key}&limit=all&include=tags,authors`,
-    { duration: "1m", type: "json" }
+const getPages = async ({ url, key, adminKey, version = "v4" }) => {
+  const data = await EleventyFetch(
+    `${url}/ghost/api/${version}/${
+      adminKey ? "admin" : "content"
+    }/pages/?key=${key}&limit=all&include=tags,authors&formats=html`,
+    {
+      duration: "1m",
+      type: "json",
+      ...(adminKey && {
+        fetchOptions: {
+          headers: {
+            Authorization: `Ghost ${generateJwt({ adminKey, version })}`,
+          },
+        },
+      }),
+    }
   );
 
   const updatedPages = await data.pages.map((page) => {
@@ -48,33 +85,55 @@ const getPages = async ({ url, key, version = "v4" }) => {
   });
 
   return updatedPages;
-
-  return data.pages;
 };
 
 // Get all tag data
-const getTags = async ({ url, key, version = "v4" }) => {
-  const data = await Cache(
-    `${url}/ghost/api/${version}/content/tags/?key=${key}&limit=all&include=count.posts&filter=visibility:public`,
-    { duration: "1m", type: "json" }
+const getTags = async ({ url, key, adminKey, version = "v4" }) => {
+  const data = await EleventyFetch(
+    `${url}/ghost/api/${version}/${
+      adminKey ? "admin" : "content"
+    }/tags/?key=${key}&limit=all&include=count.posts&filter=visibility:public`,
+    {
+      duration: "1m",
+      type: "json",
+      ...(adminKey && {
+        fetchOptions: {
+          headers: {
+            Authorization: `Ghost ${generateJwt({ adminKey, version })}`,
+          },
+        },
+      }),
+    }
   );
 
   return data.tags;
 };
 
 // Get all author data
-const getAuthors = async ({ url, key, version = "v4" }) => {
-  const data = await Cache(
-    `${url}/ghost/api/${version}/content/authors/?key=${key}&limit=all&include=count.posts`,
-    { duration: "1m", type: "json" }
+const getAuthors = async ({ url, key, adminKey, version = "v4" }) => {
+  const data = await EleventyFetch(
+    `${url}/ghost/api/${version}/${adminKey ? "admin" : "content"}/${
+      adminKey ? "users" : "authors"
+    }/?key=${key}&limit=all&include=count.posts`,
+    {
+      duration: "1m",
+      type: "json",
+      ...(adminKey && {
+        fetchOptions: {
+          headers: {
+            Authorization: `Ghost ${generateJwt({ adminKey, version })}`,
+          },
+        },
+      }),
+    }
   );
 
-  return data.authors;
+  return adminKey ? data.users : data.authors;
 };
 
 // Get all settings data
 const getSettings = async ({ url, key, version = "v4" }) => {
-  const data = await Cache(
+  const data = await EleventyFetch(
     `${url}/ghost/api/${version}/content/settings/?key=${key}`,
     {
       duration: "1m",

@@ -2,37 +2,36 @@
 
 [![npm](https://img.shields.io/npm/v/eleventy-plugin-ghost)](https://www.npmjs.com/package/eleventy-plugin-ghost)
 
-Import your [Ghost](https://ghost.org) content directly into [Eleventy](https://github.com/11ty/eleventy) as global data.
+Import your [Ghost](https://ghost.org) content directly into [Eleventy](https://github.com/11ty/eleventy) as global data. Compatible with Eleventy v1.0.0 and above.
 
-_Note: This plugin requires Eleventy v1.0.0 or newer in order to take advantage of [`addGlobalData()`](https://www.11ty.dev/docs/data-global-custom/)_
-
-[See the live demo](https://eleventy-plugin-ghost.netlify.app) and the [demo directory in the repo](https://github.com/daviddarnes/eleventy-plugin-ghost/tree/main/demo) to see it all in action.
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Development](#development)
+[Check out the live demo](https://eleventy-plugin-ghost.netlify.app) and the [demo directory in the repo](https://github.com/daviddarnes/eleventy-plugin-ghost/tree/main/demo) to see it all in action.
 
 ## Installation
 
-1. Install plugin using npm:
+1. Install the plugin using npm:
 
    ```
    npm install eleventy-plugin-ghost
    ```
 
-2. Add plugin to your `.eleventy.js` config, ensuring to add your Ghost url and Content API key. Check out the Ghost docs for [how to create a Content API key](http://www.ghost.org/docs/content-api/):
+2. Add the plugin to your `.eleventy.js` config, ensuring to add your Ghost URL, Content API key and optionally your Admin API key. Check out the Ghost docs for [how to create a Content](http://www.ghost.org/docs/content-api/) or [Admin API key](https://ghost.org/docs/admin-api/):
 
    ```js
    const pluginGhost = require("eleventy-plugin-ghost");
 
    require("dotenv").config();
-   const { GHOST_URL, GHOST_KEY } = process.env;
+   const {
+     GHOST_URL,
+     // GHOST_ADMIN_KEY,
+     GHOST_KEY,
+   } = process.env;
 
    module.exports = (eleventyConfig) => {
      eleventyConfig.addPlugin(pluginGhost, {
        url: GHOST_URL,
        key: GHOST_KEY,
-       version: "v4",
+       // apiKey: GHOST_ADMIN_KEY,
+       version: "v4", // "v4" is the default
      });
    };
    ```
@@ -44,29 +43,35 @@ _Note: This plugin requires Eleventy v1.0.0 or newer in order to take advantage 
    GHOST_KEY=22444f78447824223cefc48062
    ```
 
-3. Run your Eleventy project and use the global `ghost` data variable to access `posts`, `pages`, `tags`, `authors` and `settings`.
-
-The API will default to the latest version, which is `v4` presently. However passing `version` into the plugin options will set the version returned, as shown in the above code sample.
+3. Run or build your Eleventy project and use the global `ghost` data variable to access `posts`, `pages`, `tags`, `authors` and `settings`.
 
 ## Usage
 
-After installing and running you'll be provided with a global `ghost` key as well as a `filtersPosts()` function. This gives you access to the following:
+The API will default to the latest stable version, which is `v4`. However passing `version` into the plugin options will set the version returned, as shown in the above code sample.
 
-### API
+After installing and running you'll be provided with a global `ghost` key as well as a `filtersPosts()` function. See [API](#API) and [filtering posts](#Filtering-posts) sections respectively for more information.
 
-- `ghost.posts`: An array of all posts in Ghost, including their tags and authors
-- `ghost.pages`: An array of all pages in Ghost
+## API
+
+- `ghost.posts`: An array of all posts in Ghost, including their tags and authors. Note that the `posts` array will include draft posts if you use the Admin API
+- `ghost.pages`: An array of all pages in Ghost. Note that the `pages` array will include draft pages if you use the Admin API
 - `ghost.tags`: An array of all tags in Ghost, including the number of posts within each tag but filtered to only contain public tags
-- `ghost.authors`: An array of all authors in Ghost, including the number of posts within each author
+- `ghost.authors`: An array of all authors in Ghost, including the number of posts within each author. Note that using the Admin API will cause `authors` to actually return `users` which comes with additional data
 - `ghost.settings`: All settings set in Ghost
 
 All data is cached using [`@11ty/eleventy-fetch`](https://www.11ty.dev/docs/plugins/fetch/) with a duration of 1 minute. This keeps the local builds fast while still inheriting newly applied content.
 
-### Internal tags
+## Admin API
+
+Passing in an Admin API key will cause the plugin to use the Ghost Admin API. This means all global data objects except for `settings` will return additional data. For example `posts` and `pages` will include draft posts and pages. For more information on what additional data is exposed check out the [official Ghost docs](https://ghost.org/docs/admin-api/#posts).
+
+If you're looking to get additional data from the Admin API, such as `tiers`, `offers` and `members` then feel free to follow the [development guide](#development) guide down below and submit a pull request.
+
+## Internal tags
 
 When posts are retrieved all tags are applied, including [internal tags](https://ghost.org/docs/publishing/#internal-tag). Internal tags are very useful for grouping posts without exposing the tag in the front-end. To assist with this the plugin filters out internal tags from the `tags` key on posts and applies them to a new `internalTags` key. Internal tag slugs are prefixed with `hash-` to mirror the `#` applied in the UI to define them.
 
-### Filtering posts
+## Filtering posts
 
 The plugin comes with a custom filter called `filterPosts`, this can be used to filter posts by attributes such as `authors`, `tags` and `internalTags` using the attributes slug. The following example will list posts that are tagged with "portfolio":
 
@@ -98,7 +103,7 @@ The filter works for `authors` as well as `internalTags`:
 {% endfor %}
 ```
 
-### Creating pages
+## Creating pages
 
 Rendering pages for posts, pages, authors and tags can be done by making use of the [eleventy pagination](https://www.11ty.dev/docs/pagination/) feature. In the following example post pages are being created in a `post.njk` file:
 
